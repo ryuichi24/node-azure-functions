@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "0927612f-7edb-4df1-8f62-a7217992f90b",
+    "name": "local",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2022-10-24T04:12:44.492Z",
+    "modified": "2022-10-24T04:12:54.117Z",
+    "data": [
+      {
+        "name": "BASE_URL",
+        "value": "http://localhost:7071/api"
+      }
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+https://stackoverflow.com/questions/58929432/excluding-a-file-in-azure-function-from-azure-deployment
+
+*.js.map
+*.ts
+.git*
+.vscode
+local.settings.json
+test
+tsconfig.json
+
