@@ -18,8 +18,8 @@ const deleteHttpTrigger: AzureFunction = async function (
     };
     return;
   }
-
-  await deleteTodo(todoId);
+ 
+ await deleteTodo(todoId);
 
   context.res = {
     status: 204,

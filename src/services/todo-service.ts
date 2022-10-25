@@ -1,44 +1,15 @@
-interface TodoItem {
-  id: number;
-  title: string;
-  isCompleted: boolean;
-}
+import { CreateTodoDto } from "../dtos/CreateTodoDto";
+import { UpdateTodoDto } from "../dtos/UpdateTodoDto";
+import { TodoItem } from "../models/TodoItem";
+import { todoRepository } from "../repositories/todo-repository";
+import { generateId } from "../utils/generate-id";
 
-interface CreateTodoDto {
-  title: string;
-}
-
-interface UpdateTodoDto {
-  title: string;
-  isCompleted: boolean;
-}
-
-const generateId = () => Math.floor(Math.random() * 1000) + 1;
-
-let todos: TodoItem[] = [
-  {
-    id: generateId(),
-    title: "todo 1",
-    isCompleted: false,
-  },
-  {
-    id: generateId(),
-    title: "todo 1",
-    isCompleted: false,
-  },
-  {
-    id: generateId(),
-    title: "todo 1",
-    isCompleted: false,
-  },
-];
-
-export const getTodos = async (): Promise<TodoItem[]> => {
-  return todos;
+export const getTodos = async (): Promise<TodoItem[] | any> => {
+  return await todoRepository.getOnes();
 };
 
-export const getTodo = async (id: number): Promise<TodoItem> => {
-  return todos.find((todoItem) => todoItem.id === id);
+export const getTodo = async (id: string): Promise<any> => {
+  return await todoRepository.getOneById(id);
 };
 
 export const createTodo = async (dto: CreateTodoDto): Promise<TodoItem> => {
@@ -48,22 +19,20 @@ export const createTodo = async (dto: CreateTodoDto): Promise<TodoItem> => {
     isCompleted: false,
   };
 
-  todos.push(newTodo);
-
-  return newTodo;
+  return await todoRepository.createOne(newTodo);
 };
 
-export const deleteTodo = async (todoId: number) => {
-  const existingTodo = todos.find((todoItem) => todoItem.id === todoId);
+export const deleteTodo = async (id: string) => {
+  const existingTodo = await todoRepository.getOneById(id);
   if (!existingTodo) {
     return false;
   }
 
-  todos = [...todos.filter((todoItem) => todoItem.id !== existingTodo.id)];
+  todoRepository.removeOneById(existingTodo.id);
 };
 
-export const updateTodo = async (dto: UpdateTodoDto, todoId: number) => {
-  const existingTodo = todos.find((todoItem) => todoItem.id === todoId);
+export const updateTodo = async (dto: UpdateTodoDto, id: string) => {
+  const existingTodo = await todoRepository.getOneById(id);
   if (!existingTodo) {
     return false;
   }
@@ -76,8 +45,5 @@ export const updateTodo = async (dto: UpdateTodoDto, todoId: number) => {
     existingTodo.isCompleted = dto.isCompleted;
   }
 
-  todos = [
-    ...todos.filter((todoItem) => todoItem.id !== existingTodo.id),
-    existingTodo,
-  ];
+  await todoRepository.update(existingTodo);
 };
